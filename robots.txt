@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://mother-lode-detailing.vercel.app/sitemap.xml
