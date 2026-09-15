@@ -8,7 +8,7 @@ const CONTACT = {
 };
 const SOCIAL = [
   { label: 'Instagram', url: '' },
-  { label: 'Facebook', url: 'https://www.facebook.com/profile.php?id=61594260276175' },
+  { label: 'Facebook', url: 'https://www.facebook.com/motherlodedetailing' },
   { label: 'Google reviews', url: '' },
   { label: 'TikTok', url: '' },
 ];
