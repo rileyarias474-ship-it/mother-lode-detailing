@@ -1,926 +1,437 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Security Headers -->
-  <meta http-equiv="X-Content-Type-Options" content="nosniff">
-  <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
-  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
-
-  <!-- SEO -->
-  <title>Mother Lode Detailing | Mobile Auto Detailing | Calaveras County, CA</title>
-  <meta name="description" content="Premium mobile auto detailing serving Calaveras County, CA. Full interior and exterior detail — we come to you. Book online today.">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://mother-lode-detailing.vercel.app">
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Mother Lode Detailing — Calaveras County, CA">
-  <meta property="og:description" content="Premium mobile auto detailing. Full interior and exterior — we come to you.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://mother-lode-detailing.vercel.app">
-
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "name": "Mother Lode Detailing",
-    "description": "Premium mobile auto detailing serving Calaveras County, CA. Full interior and exterior detail — we come to you.",
-    "url": "https://mother-lode-detailing.vercel.app",
-    "telephone": "+15595055164",
-    "priceRange": "$$",
-    "image": "https://mother-lode-detailing.vercel.app/Mother_Lode_Detailing_transparent.png",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Valley Springs",
-      "addressRegion": "CA",
-      "addressCountry": "US"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": 38.1135,
-      "longitude": -120.8288
-    },
-    "areaServed": {
-      "@type": "County",
-      "name": "Calaveras County"
-    },
-    "serviceType": "Mobile Auto Detailing",
-    "hasOfferCatalog": {
-      "@type": "OfferCatalog",
-      "name": "Detailing Services",
-      "itemListElement": [
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Full Mother Lode Detail",
-            "description": "Complete mobile detail package — full pre-wash scrub, wheel and tire cleaning, full exterior wash, full interior vacuum and wipe-down."
-          }
-        }
-      ]
-    },
-    "sameAs": []
-  }
-  </script>
-
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- GSAP + ScrollTrigger -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
-
-  <!-- Lenis smooth scroll -->
-  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            ink: {
-              900: '#0B1829',
-              700: '#1E3550',
-              500: '#3A556B',
-              300: '#6B8DA8',
-              100: '#A0BAD0',
-            },
-            blue: {
-              bright: '#60C8FF',
-              base:   '#2196E8',
-              mid:    '#1A78C8',
-              dark:   '#0F4E99',
-            },
-          },
-          fontFamily: {
-            display: ['"Barlow Condensed"', 'sans-serif'],
-            body:    ['Inter', 'sans-serif'],
-          },
-        }
-      }
-    }
-  </script>
-
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: auto; }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #F5F8FC;
-      color: #0B1829;
-      overflow-x: hidden;
-    }
-
-    body::after {
-      content: '';
-      position: fixed; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-      pointer-events: none; z-index: 9998; opacity: 0.18;
-    }
-
-    /* Scroll progress */
-    #scroll-bar {
-      position: fixed; left: 0; top: 0;
-      width: 3px; height: 0%;
-      background: linear-gradient(180deg, #60C8FF, #2196E8, #1A78C8);
-      z-index: 9997;
-      box-shadow: 0 0 14px rgba(33,150,232,0.4);
-      transition: height 0.05s linear;
-    }
-
-    /* Nav */
-    #nav { transition: background 0.4s ease, backdrop-filter 0.4s ease, box-shadow 0.4s ease; }
-    #nav.scrolled {
-      background: rgba(255,255,255,0.97);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(33,150,232,0.15);
-      box-shadow: 0 2px 24px rgba(14,30,60,0.07);
-    }
-    .nav-link { color: rgba(255,255,255,0.82); transition: color 0.25s; }
-    .nav-link:hover { color: #FFFFFF; }
-    #nav.scrolled .nav-link { color: #3A556B; }
-    #nav.scrolled .nav-link:hover { color: #2196E8; }
-    .ham-line { background: rgba(255,255,255,0.9); transition: background 0.25s; }
-    #nav.scrolled .ham-line { background: #0B1829; }
-
-    /* YouTube hero */
-    #yt-bg { position: absolute; inset: 0; overflow: hidden; }
-    #yt-player {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 177.78vh; min-width: 100%;
-      height: 56.25vw; min-height: 100%;
-      pointer-events: none;
-      filter: saturate(0.35) brightness(0.32);
-    }
-    #yt-player iframe { width: 100%; height: 100%; border: 0; }
-
-    /* Typography */
-    .heading {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: -0.02em;
-      line-height: 0.92;
-    }
-    .label {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      font-size: 0.78rem;
-      color: #1A78C8;
-    }
-    .divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(33,150,232,0.4), transparent);
-    }
-
-    /* Blue shimmer — hero only (dark bg) */
-    @keyframes shimmer {
-      0%   { background-position: -200% center; }
-      100% { background-position:  200% center; }
-    }
-    .blue-shimmer {
-      background: linear-gradient(90deg, #2196E8 0%, #60C8FF 35%, #FFFFFF 50%, #60C8FF 65%, #2196E8 100%);
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: shimmer 4s linear infinite;
-    }
-
-    /* Buttons */
-    .btn {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 700;
-      font-size: 1.05rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 13px 32px;
-      border-radius: 4px;
-      display: inline-block;
-      text-decoration: none;
-      cursor: pointer;
-      border: none;
-    }
-    .btn-blue {
-      background: linear-gradient(135deg, #1A78C8, #2196E8, #60C8FF);
-      color: #fff;
-      transition: filter 0.22s ease, transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.22s ease;
-    }
-    .btn-blue:hover  { filter: brightness(1.1); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(33,150,232,0.35); }
-    .btn-blue:active { transform: translateY(0); }
-    .btn-blue:focus-visible { outline: 2px solid #60C8FF; outline-offset: 3px; }
-
-    .btn-outline {
-      background: transparent;
-      color: #1A78C8;
-      border: 1.5px solid rgba(33,150,232,0.5);
-      transition: border-color 0.22s ease, color 0.22s ease, background 0.22s ease, transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
-    }
-    .btn-outline:hover  { border-color: #2196E8; color: #2196E8; background: rgba(33,150,232,0.06); transform: translateY(-2px); }
-    .btn-outline:active { transform: translateY(0); }
-    .btn-outline:focus-visible { outline: 2px solid #2196E8; outline-offset: 3px; }
-
-    /* Cards */
-    .pkg-card {
-      background: #FFFFFF;
-      border: 1px solid rgba(33,150,232,0.18);
-      border-radius: 6px;
-      box-shadow: 0 2px 20px rgba(14,30,60,0.05);
-      transition: border-color 0.28s ease, transform 0.28s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.28s ease;
-    }
-    .pkg-card:hover { border-color: rgba(33,150,232,0.4); transform: translateY(-5px); box-shadow: 0 16px 50px rgba(33,150,232,0.1); }
-    .pkg-card.featured { border-color: rgba(33,150,232,0.3); background: linear-gradient(145deg, #FFFFFF 0%, #EBF4FD 100%); }
-
-    .coming-soon-card {
-      background: #EEF4FB;
-      border: 1px solid rgba(33,150,232,0.12);
-      border-radius: 6px;
-      opacity: 0.85;
-    }
-
-    /* Gallery */
-    .gal-item { position: relative; overflow: hidden; border-radius: 6px; }
-    .gal-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.4,0,0.2,1); display: block; }
-    .gal-item:hover img { transform: scale(1.06); }
-    .gal-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(11,24,41,0.8) 0%, transparent 55%); opacity: 0; transition: opacity 0.3s ease; }
-    .gal-item:hover .gal-overlay { opacity: 1; }
-
-    /* Marquee */
-    .marquee-inner { display: flex; white-space: nowrap; animation: ticker 30s linear infinite; }
-    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-    /* Form inputs */
-    .finput {
-      width: 100%;
-      background: #F5F8FC;
-      border: 1px solid rgba(33,150,232,0.22);
-      color: #0B1829;
-      padding: 13px 15px;
-      border-radius: 4px;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.93rem;
-      transition: border-color 0.22s ease, box-shadow 0.22s ease;
-    }
-    .finput:focus { outline: none; border-color: #2196E8; box-shadow: 0 0 0 3px rgba(33,150,232,0.1); }
-    .finput::placeholder { color: #94B0C8; }
-    .finput option { background: #FFFFFF; color: #0B1829; }
-
-    /* Stat numbers */
-    .stat-num {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 900;
-      font-size: clamp(2.8rem, 7vw, 4.5rem);
-      line-height: 1;
-      background: linear-gradient(135deg, #1A78C8, #2196E8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    /* Orbs */
-    .orb      { background: radial-gradient(ellipse at center, rgba(33,150,232,0.07) 0%, transparent 70%); pointer-events: none; position: absolute; }
-    .orb-soft { background: radial-gradient(ellipse at center, rgba(33,150,232,0.05) 0%, transparent 70%); pointer-events: none; position: absolute; }
-
-    /* Logo */
-    .logo-img { filter: drop-shadow(0 2px 10px rgba(33,150,232,0.2)); }
-
-    /* Scroll bounce */
-    @keyframes sb { 0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)} }
-    .scroll-bounce { animation: sb 2s ease-in-out infinite; }
-
-    /* Floating CTA */
-    #float-cta {
-      position: fixed; bottom: 28px; right: 24px;
-      z-index: 9990;
-      opacity: 0; transform: translateY(20px);
-      transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
-    }
-    #float-cta.visible { opacity: 1; transform: translateY(0); }
-
-    /* Mobile nav */
-    #mob-nav { display: none; }
-    #mob-nav.open { display: flex; }
-
-    /* Reveal states */
-    .reveal       { opacity: 0; transform: translateY(40px); }
-    .reveal-left  { opacity: 0; transform: translateX(-50px); }
-    .reveal-right { opacity: 0; transform: translateX(50px); }
-    .reveal-scale { opacity: 0; transform: scale(0.92); }
-
-    /* Modal */
-    .modal-bg { background: rgba(11,24,41,0.85); backdrop-filter: blur(12px); }
-
-    a:focus-visible, button:focus-visible { outline: 2px solid #2196E8; outline-offset: 3px; border-radius: 2px; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo='; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Mother Lode Detailing | Auto Detailing in Calaveras County &amp; Lodi</title>
+<meta name="description" content="Interior and exterior detailing, paint correction, and ceramic coatings for sedans, trucks, and SUVs in Calaveras County and Lodi, CA. Exterior from $80. Call or text (559) 505-5164.">
+<meta name="theme-color" content="#0E241E">
+<link rel="canonical" href="https://mother-lode-detailing.vercel.app/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mother-lode-detailing.vercel.app/">
+<meta property="og:title" content="Mother Lode Detailing">
+<meta property="og:description" content="Auto detailing, paint correction, and ceramic coatings in Calaveras County and Lodi, CA.">
+<meta property="og:image" content="https://mother-lode-detailing.vercel.app/assets/logo-1120.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AutomotiveBusiness",
+  "name": "Mother Lode Detailing",
+  "description": "Auto detailing, paint correction, and ceramic coatings for sedans, trucks, and SUVs.",
+  "telephone": "+1-559-505-5164",
+  "email": "arias.riley@yahoo.com",
+  "url": "https://mother-lode-detailing.vercel.app/",
+  "image": "https://mother-lode-detailing.vercel.app/assets/logo-1120.png",
+  "sameAs": ["https://www.facebook.com/profile.php?id=61594260276175"],
+  "priceRange": "$80-$1200",
+  "areaServed": [
+    { "@type": "AdministrativeArea", "name": "Calaveras County, CA" },
+    { "@type": "City", "name": "Lodi, CA" }
+  ]
+}
+</script>
+<link rel="icon" type="image/png" href="assets/icon-64.png">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="assets/styles.css">
+<script>document.documentElement.classList.add('js')</script>
+<script src="assets/main.js" defer></script>
 </head>
-
 <body>
+<a class="skip" href="#main">Skip to content</a>
 
-  <div id="scroll-bar" aria-hidden="true"></div>
-  <a id="float-cta" href="#schedule" class="btn btn-blue shadow-2xl" aria-label="Book a detail">Book Now</a>
-
-  <!-- ══════════ NAV ══════════ -->
-  <nav id="nav" role="navigation" aria-label="Main navigation"
-       class="fixed top-0 inset-x-0 z-50 px-6 md:px-12 py-4 flex items-center justify-between">
-
-    <a href="#top" aria-label="Mother Lode Detailing — home">
-      <img src="Mother_Lode_Detailing_transparent.png" alt="Mother Lode Detailing" class="logo-img h-12 w-auto object-contain">
+<nav class="nav" aria-label="Main">
+  <div class="wrap nav-inner">
+    <a class="nav-brand" href="#top">
+      <span class="nb-top">Mother Lode</span>
+      <span class="nb-sub">Detailing</span>
     </a>
-
-    <div class="hidden md:flex items-center gap-7">
-      <a href="#services"     class="nav-link font-display font-semibold text-sm uppercase tracking-widest">Services</a>
-      <a href="#how-it-works" class="nav-link font-display font-semibold text-sm uppercase tracking-widest">How It Works</a>
-      <a href="#gallery"      class="nav-link font-display font-semibold text-sm uppercase tracking-widest">Gallery</a>
-      <a href="#about"        class="nav-link font-display font-semibold text-sm uppercase tracking-widest">About</a>
-    </div>
-
-    <div class="hidden md:flex items-center gap-4">
-      <a href="tel:+15595055164" class="nav-link flex items-center gap-2">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.82a19.79 19.79 0 01-3.07-8.68A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-        <span class="font-display font-semibold" style="font-size:0.9rem;">(559) 505-5164</span>
-      </a>
-      <a href="#schedule" class="btn btn-blue" style="padding:10px 22px;font-size:0.88rem;">Book Now</a>
-    </div>
-
-    <button id="ham" aria-label="Open navigation" aria-expanded="false" class="md:hidden flex flex-col gap-[5px] p-2">
-      <span id="h1" class="ham-line block w-6 h-[1.5px] transition-transform duration-300 origin-center"></span>
-      <span id="h2" class="ham-line block w-6 h-[1.5px] transition-opacity duration-300"></span>
-      <span id="h3" class="ham-line block w-6 h-[1.5px] transition-transform duration-300 origin-center"></span>
-    </button>
-  </nav>
-
-  <!-- Mobile nav -->
-  <div id="mob-nav" role="dialog" aria-modal="true" aria-label="Mobile navigation"
-       class="fixed inset-0 z-40 flex-col items-center justify-center gap-7"
-       style="background:rgba(11,24,41,0.97);backdrop-filter:blur(10px);">
-    <a href="#services"     onclick="closeNav()" class="heading text-4xl text-white hover:text-[#60C8FF] transition-colors">Services</a>
-    <a href="#how-it-works" onclick="closeNav()" class="heading text-4xl text-white hover:text-[#60C8FF] transition-colors">How It Works</a>
-    <a href="#gallery"      onclick="closeNav()" class="heading text-4xl text-white hover:text-[#60C8FF] transition-colors">Gallery</a>
-    <a href="#about"        onclick="closeNav()" class="heading text-4xl text-white hover:text-[#60C8FF] transition-colors">About</a>
-    <a href="#schedule"     onclick="closeNav()" class="heading text-4xl text-white hover:text-[#60C8FF] transition-colors">Book Now</a>
-    <a href="tel:+15595055164" class="heading text-2xl mt-2" style="color:#60C8FF;">(559) 505-5164</a>
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#area">Area</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a class="btn btn-gold btn-sm" href="#book">Book<span class="cta-extra">&nbsp;a detail</span></a>
   </div>
+</nav>
 
-  <!-- ══════════ HERO — stays cinematic dark with video ══════════ -->
-  <section id="top" class="relative h-screen min-h-[640px] flex items-end overflow-hidden pb-28 md:pb-36">
-    <div id="yt-bg" aria-hidden="true">
-      <div id="yt-player"></div>
-      <!-- covers YouTube chrome until video is actually playing, then fades out -->
-      <div id="yt-cover" style="position:absolute;inset:0;background:#0B1829;z-index:2;transition:opacity 1.8s ease;"></div>
-    </div>
-    <!-- gradient heavier on left, light on right so video shows through -->
-    <div class="absolute inset-0" style="background:linear-gradient(105deg,rgba(11,24,41,0.92) 0%,rgba(11,24,41,0.6) 40%,rgba(11,24,41,0.1) 70%,transparent 100%);" aria-hidden="true"></div>
-    <div class="absolute inset-0" style="background:linear-gradient(180deg,rgba(11,24,41,0.35) 0%,transparent 40%,rgba(11,24,41,0.5) 100%);" aria-hidden="true"></div>
-
-    <div class="relative z-10 text-left px-8 md:px-14 lg:px-20 w-full max-w-2xl">
-      <div id="hero-logo" class="opacity-0 mb-6">
-        <img src="Mother_Lode_Detailing_transparent.png"
-             alt="Mother Lode Detailing"
-             class="h-28 md:h-36 w-auto object-contain"
-             style="filter:drop-shadow(0 4px 28px rgba(33,150,232,0.5));">
+<header class="hero" id="top">
+  <div class="hero-paint" aria-hidden="true"></div>
+  <img class="hero-decal" src="assets/logo-1120.png" srcset="assets/logo-640.png 640w, assets/logo-1120.png 1120w" sizes="(max-width: 860px) 86vw, 42vw" width="1120" height="926" fetchpriority="high" alt="Mother Lode Detailing logo: a green and white Ford pickup beside an ore cart full of gold, under a Calaveras County sign">
+  <canvas class="dust" aria-hidden="true"></canvas>
+  <div class="wrap hero-inner">
+    <div class="hero-copy">
+      <p class="eyebrow">Mother Lode Detailing · Calaveras County &amp; Lodi</p>
+      <h1><span>Red dirt out.</span> <span class="chrome">Shine back in.</span></h1>
+      <p class="lede">Detailing, paint correction, and ceramic coatings for sedans, trucks, and SUVs. Pine sap, oak pollen, Highway 4 bugs, and the dog's winter coat all come off.</p>
+      <div class="actions">
+        <a class="btn btn-gold" href="#book">Book a detail</a>
+        <a class="btn btn-ghost" href="#work">See our work</a>
       </div>
-      <div id="h-label" class="mb-4 opacity-0" style="font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;font-size:0.78rem;color:#60C8FF;">Calaveras County &mdash; Mobile Auto Detailing</div>
-      <h1 id="h-head" class="heading mb-5 opacity-0" style="font-size:clamp(3rem,9vw,6.5rem);color:#F0F4FF;text-shadow:0 4px 40px rgba(11,24,41,0.7);">
-        Your Car.<br>Our <span class="blue-shimmer">Craft.</span>
-      </h1>
-      <p id="h-sub" class="mb-10 opacity-0" style="font-size:1.05rem;line-height:1.78;font-weight:300;color:rgba(200,220,255,0.85);max-width:420px;">
-        Full mobile interior and exterior detailing in Calaveras County. Professional results, delivered to your driveway.
-      </p>
-      <div id="h-cta" class="flex flex-col sm:flex-row gap-4 opacity-0">
-        <a href="#schedule" class="btn btn-blue">Schedule Your Detail</a>
-        <a href="#services" class="btn" style="background:transparent;color:rgba(255,255,255,0.85);border:1.5px solid rgba(255,255,255,0.38);transition:border-color 0.22s,color 0.22s,transform 0.2s cubic-bezier(0.34,1.56,0.64,1);" onmouseover="this.style.borderColor='rgba(255,255,255,0.7)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.38)';this.style.transform=''">View Services</a>
-      </div>
-    </div>
-
-    <div class="scroll-bounce absolute bottom-8 left-8 md:left-14 lg:left-20" aria-hidden="true">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(96,200,255,0.65)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 5v14M5 12l7 7 7-7"/>
-      </svg>
-    </div>
-  </section>
-
-  <!-- ══════════ MARQUEE — keep dark blue ══════════ -->
-  <div class="overflow-hidden py-3" style="background:linear-gradient(90deg,#0F4E99,#1A78C8,#2196E8,#1A78C8,#0F4E99);" aria-hidden="true">
-    <div class="marquee-inner">
-      <span class="heading text-white text-base px-6">Full Detail</span><span class="px-3 opacity-50" style="color:#93C5FD;">&#9670;</span>
-      <span class="heading text-white text-base px-6">Interior &amp; Exterior</span><span class="px-3 opacity-50" style="color:#93C5FD;">&#9670;</span>
-      <span class="heading text-white text-base px-6">Mobile Service</span><span class="px-3 opacity-50" style="color:#93C5FD;">&#9670;</span>
-      <span class="heading text-white text-base px-6">Wheel Detail</span><span class="px-3 opacity-50" style="color:#93C5FD;">&#9670;</span>
-      <span class="heading text-white text-base px-6">Pre-Wash Scrub</span><span class="px-3 opacity-50" style="color:#93C5FD;">&#9670;</span>
-      <span class="heading text-white text-base px-6">Calaveras County</span><span class="px-3 opacity-50" style="color:#93C5FD;">&#9670;</span>
-      <span class="heading text-white text-base px-6">Full Detail</span><span class="px-3 opacity-50" style="color:#93C5FD;">&#9670;</span>
-      <span class="heading text-white text-base px-6">Interior &amp; Exterior</span><span class="px-3 opacity-50" style="color:#93C5FD;">&#9670;</span>
-      <span class="heading text-white text-base px-6">Mobile Service</span><span class="px-3 opacity-50" style="color:#93C5FD;">&#9670;</span>
-      <span class="heading text-white text-base px-6">Wheel Detail</span><span class="px-3 opacity-50" style="color:#93C5FD;">&#9670;</span>
-      <span class="heading text-white text-base px-6">Pre-Wash Scrub</span><span class="px-3 opacity-50" style="color:#93C5FD;">&#9670;</span>
-      <span class="heading text-white text-base px-6">Calaveras County</span><span class="px-3 opacity-50" style="color:#93C5FD;">&#9670;</span>
     </div>
   </div>
-
-  <!-- ══════════ SERVICES ══════════ -->
-  <section id="services" class="py-24 md:py-32 px-6 md:px-12 lg:px-24 relative overflow-hidden" style="background:#FFFFFF;">
-    <div class="orb w-[600px] h-[600px]" style="top:-10%;left:50%;transform:translateX(-50%);" aria-hidden="true"></div>
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-16">
-        <div class="label mb-3 reveal">What We Offer</div>
-        <h2 class="heading reveal" style="font-size:clamp(2.4rem,6vw,4.5rem);color:#0B1829;">Details That Make the Difference</h2>
-        <div class="divider mt-6 max-w-[200px] mx-auto reveal"></div>
-      </div>
-
-      <!-- Featured package -->
-      <div class="pkg-card featured p-8 md:p-12 mb-8 reveal-scale">
-        <div class="flex flex-col md:flex-row md:items-start gap-8">
-          <div class="flex-1">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-5" style="background:rgba(33,150,232,0.08);border:1px solid rgba(33,150,232,0.22);">
-              <span class="font-display font-semibold" style="color:#1A78C8;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;">Our Signature Service</span>
-            </div>
-            <h3 class="heading mb-4" style="font-size:clamp(2rem,4vw,3rem);color:#0B1829;">The Full<br><span style="color:#1A78C8;">Mother Lode</span><br>Detail</h3>
-            <div class="divider mb-6 max-w-[120px]"></div>
-            <p class="mb-6" style="color:#3A556B;line-height:1.8;font-weight:300;max-width:520px;">
-              Our complete mobile detail package — inside and out. Full pre-wash scrub, wheel and tire cleaning, full exterior wash, full interior vacuum and wipe-down. We come to you and leave your vehicle looking like it rolled off the lot.
-            </p>
-            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
-              <li class="flex items-center gap-3 text-sm" style="color:#3A556B;">
-                <span class="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style="background:rgba(33,150,232,0.1);border:1px solid rgba(33,150,232,0.28);"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#2196E8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span>Full exterior hand wash
-              </li>
-              <li class="flex items-center gap-3 text-sm" style="color:#3A556B;">
-                <span class="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style="background:rgba(33,150,232,0.1);border:1px solid rgba(33,150,232,0.28);"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#2196E8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span>Pre-wash foam scrub
-              </li>
-              <li class="flex items-center gap-3 text-sm" style="color:#3A556B;">
-                <span class="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style="background:rgba(33,150,232,0.1);border:1px solid rgba(33,150,232,0.28);"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#2196E8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span>Wheel &amp; tire deep clean
-              </li>
-              <li class="flex items-center gap-3 text-sm" style="color:#3A556B;">
-                <span class="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style="background:rgba(33,150,232,0.1);border:1px solid rgba(33,150,232,0.28);"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#2196E8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span>Full interior vacuum
-              </li>
-              <li class="flex items-center gap-3 text-sm" style="color:#3A556B;">
-                <span class="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style="background:rgba(33,150,232,0.1);border:1px solid rgba(33,150,232,0.28);"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#2196E8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span>Interior wipe-down &amp; glass
-              </li>
-              <li class="flex items-center gap-3 text-sm" style="color:#3A556B;">
-                <span class="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style="background:rgba(33,150,232,0.1);border:1px solid rgba(33,150,232,0.28);"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#2196E8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span>100% mobile — we come to you
-              </li>
-            </ul>
-            <a href="#schedule" class="btn btn-blue">Book This Package</a>
-          </div>
-          <div class="hidden md:flex items-center justify-center w-44 h-44 rounded-full flex-shrink-0" style="background:radial-gradient(circle,rgba(33,150,232,0.07),transparent 70%);border:1px solid rgba(33,150,232,0.16);">
-            <svg width="60" height="60" viewBox="0 0 64 64" fill="none" aria-hidden="true">
-              <circle cx="32" cy="32" r="28" stroke="#2196E8" stroke-width="1.5" stroke-dasharray="4 3"/>
-              <path d="M20 38c0-6.627 5.373-12 12-12s12 5.373 12 12" stroke="#1A78C8" stroke-width="2" stroke-linecap="round"/>
-              <path d="M12 44h40M16 44v4M48 44v4" stroke="#2196E8" stroke-width="1.5" stroke-linecap="round"/>
-              <circle cx="32" cy="22" r="3" fill="#1A78C8"/>
-            </svg>
-          </div>
-        </div>
-      </div>
-
-      <!-- Coming Soon -->
-      <div class="mb-6 reveal"><div class="label">More Services Coming Soon</div></div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="coming-soon-card p-6 reveal">
-          <div class="inline-flex items-center px-2 py-0.5 rounded mb-4" style="background:rgba(33,150,232,0.08);border:1px solid rgba(33,150,232,0.18);">
-            <span class="font-display" style="font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:#1A78C8;">Coming Soon</span>
-          </div>
-          <h4 class="heading text-xl mb-2" style="color:#1E3550;">Ceramic Coating</h4>
-          <p class="text-sm" style="color:#5A7A92;line-height:1.65;font-weight:300;">Long-lasting paint protection with a deep, glossy finish.</p>
-        </div>
-        <div class="coming-soon-card p-6 reveal">
-          <div class="inline-flex items-center px-2 py-0.5 rounded mb-4" style="background:rgba(33,150,232,0.08);border:1px solid rgba(33,150,232,0.18);">
-            <span class="font-display" style="font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:#1A78C8;">Coming Soon</span>
-          </div>
-          <h4 class="heading text-xl mb-2" style="color:#1E3550;">Paint Correction</h4>
-          <p class="text-sm" style="color:#5A7A92;line-height:1.65;font-weight:300;">Remove swirls, scratches, and oxidation for a showroom finish.</p>
-        </div>
-        <div class="coming-soon-card p-6 reveal">
-          <div class="inline-flex items-center px-2 py-0.5 rounded mb-4" style="background:rgba(33,150,232,0.08);border:1px solid rgba(33,150,232,0.18);">
-            <span class="font-display" style="font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:#1A78C8;">Coming Soon</span>
-          </div>
-          <h4 class="heading text-xl mb-2" style="color:#1E3550;">Headlight Restoration</h4>
-          <p class="text-sm" style="color:#5A7A92;line-height:1.65;font-weight:300;">Restore cloudy, yellowed headlights to crystal clarity.</p>
-        </div>
-        <div class="coming-soon-card p-6 reveal">
-          <div class="inline-flex items-center px-2 py-0.5 rounded mb-4" style="background:rgba(33,150,232,0.08);border:1px solid rgba(33,150,232,0.18);">
-            <span class="font-display" style="font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:#1A78C8;">Coming Soon</span>
-          </div>
-          <h4 class="heading text-xl mb-2" style="color:#1E3550;">Interior Protection</h4>
-          <p class="text-sm" style="color:#5A7A92;line-height:1.65;font-weight:300;">Fabric and leather treatment to protect your interior investment.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══════════ STATS ══════════ -->
-  <div class="py-14 px-6 md:px-12 lg:px-24" style="border-top:1px solid rgba(33,150,232,0.12);border-bottom:1px solid rgba(33,150,232,0.12);background:#EBF4FD;" aria-label="Statistics">
-    <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-      <div class="reveal"><div class="stat-num" data-target="100" data-suffix="%">0</div><div class="font-display mt-2" style="color:#6B8DA8;font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;">Mobile Service</div></div>
-      <div class="reveal"><div class="stat-num" data-target="5" data-suffix=" Star">0</div><div class="font-display mt-2" style="color:#6B8DA8;font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;">Customer Rating</div></div>
-      <div class="reveal"><div class="stat-num" data-target="2" data-suffix="hr">0</div><div class="font-display mt-2" style="color:#6B8DA8;font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;">Avg. Detail Time</div></div>
-      <div class="reveal"><div class="stat-num" data-target="100" data-suffix="%">0</div><div class="font-display mt-2" style="color:#6B8DA8;font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;">Satisfaction Guarantee</div></div>
+  <div class="wipe-bar">
+    <div class="wrap wipe-inner">
+      <p class="wipe-hint"><span class="hint-fine">Move across the paint to wipe off the dust.</span><span class="hint-coarse">Swipe sideways across the paint to wipe it.</span></p>
+      <p class="wipe-readout" aria-hidden="true">Dust left <b>100%</b></p>
+      <button class="wipe-btn" type="button">Wipe it for me</button>
+      <p class="sr-only wipe-status" role="status"></p>
     </div>
   </div>
+</header>
+<div class="trim" aria-hidden="true"></div>
 
-  <!-- ══════════ HOW IT WORKS ══════════ -->
-  <section id="how-it-works" class="py-24 md:py-32 px-6 md:px-12 lg:px-24 relative overflow-hidden" style="background:#FFFFFF;">
-    <div class="orb-soft w-[500px] h-[500px] right-0 top-1/2" style="transform:translate(40%,-50%);" aria-hidden="true"></div>
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-16">
-        <div class="label mb-3 reveal">The Process</div>
-        <h2 class="heading reveal" style="font-size:clamp(2.4rem,6vw,4.5rem);color:#0B1829;">Three Steps to Spotless</h2>
+<main id="main">
+
+  <section class="section silver" id="work">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Recent work</p>
+        <h2>Trucks we've cleaned lately.</h2>
+        <p>Photos and clips from real jobs.</p>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-        <div class="text-center reveal">
-          <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-6" style="background:linear-gradient(135deg,#1A78C8,#60C8FF);box-shadow:0 4px 24px rgba(33,150,232,0.28);">
-            <span class="heading text-white text-xl">1</span>
+      <div class="gallery reveal" role="region" aria-label="Recent work photos and videos" tabindex="0">
+        <figure class="shot photo">
+          <div class="frame">
+            <img src="assets/work-foam.jpg" width="900" height="1200" loading="lazy" alt="Chevy Silverado 2500HD covered in thick white foam during a pre-wash">
+            <span class="tag">During</span>
           </div>
-          <h3 class="heading text-2xl mb-3" style="color:#0B1829;">Book Online</h3>
-          <p class="text-sm" style="color:#5A7A92;line-height:1.75;font-weight:300;">Pick a date and time that works. Our scheduler is open 24/7 — no calls needed.</p>
-        </div>
-        <div class="text-center reveal">
-          <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-6" style="background:linear-gradient(135deg,#1A78C8,#60C8FF);box-shadow:0 4px 24px rgba(33,150,232,0.28);">
-            <span class="heading text-white text-xl">2</span>
+          <figcaption>Silverado 2500HD, foam pre-wash</figcaption>
+        </figure>
+        <figure class="shot clip" data-name="blue Chevy Silverado">
+          <div class="frame">
+            <video muted loop playsinline preload="none" poster="assets/work-silverado-blue.jpg" aria-label="Walkaround of a clean blue Chevy Silverado">
+              <source src="assets/work-silverado-blue.mp4" type="video/mp4">
+            </video>
+            <button class="clip-toggle" type="button">Play</button>
           </div>
-          <h3 class="heading text-2xl mb-3" style="color:#0B1829;">We Come To You</h3>
-          <p class="text-sm" style="color:#5A7A92;line-height:1.75;font-weight:300;">We arrive at your home, work, or wherever your vehicle is parked in Calaveras County.</p>
-        </div>
-        <div class="text-center reveal">
-          <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-6" style="background:linear-gradient(135deg,#1A78C8,#60C8FF);box-shadow:0 4px 24px rgba(33,150,232,0.28);">
-            <span class="heading text-white text-xl">3</span>
+          <figcaption>Chevy Silverado, walkaround</figcaption>
+        </figure>
+        <figure class="shot photo">
+          <div class="frame">
+            <img src="assets/work-f250.jpg" width="900" height="1200" loading="lazy" alt="White Ford F-250 Super Duty with clean, glossy paint">
+            <span class="tag">After</span>
           </div>
-          <h3 class="heading text-2xl mb-3" style="color:#0B1829;">Showroom Shine</h3>
-          <p class="text-sm" style="color:#5A7A92;line-height:1.75;font-weight:300;">We handle everything — you come back to a vehicle that looks brand new.</p>
-        </div>
-      </div>
-      <div class="text-center mt-14 reveal">
-        <a href="#schedule" class="btn btn-blue">Get Started Today</a>
+          <figcaption>Ford F-250 Super Duty</figcaption>
+        </figure>
+        <figure class="shot clip" data-name="gray Chevy Silverado HD">
+          <div class="frame">
+            <video muted loop playsinline preload="none" poster="assets/work-silverado-gray.jpg" aria-label="Walkaround of a freshly washed gray Chevy Silverado HD">
+              <source src="assets/work-silverado-gray.mp4" type="video/mp4">
+            </video>
+            <button class="clip-toggle" type="button">Play</button>
+          </div>
+          <figcaption>Silverado HD, walkaround</figcaption>
+        </figure>
+        <figure class="shot photo">
+          <div class="frame">
+            <img src="assets/work-f150.jpg" width="900" height="1200" loading="lazy" alt="Silver Ford F-150 with clean paint and wheels">
+            <span class="tag">After</span>
+          </div>
+          <figcaption>Ford F-150</figcaption>
+        </figure>
       </div>
     </div>
   </section>
 
-  <!-- ══════════ GALLERY ══════════ -->
-  <section id="gallery" class="py-24 md:py-32 px-6 md:px-12 lg:px-24" style="background:#F5F8FC;">
-    <div class="max-w-6xl mx-auto">
-      <div class="mb-14 flex flex-col md:flex-row md:items-end justify-between gap-6">
-        <div>
-          <div class="label mb-3 reveal">Our Work</div>
-          <h2 class="heading reveal" style="font-size:clamp(2.4rem,6vw,4.5rem);color:#0B1829;">Before &amp; After</h2>
-        </div>
-        <a href="#schedule" class="btn btn-outline self-start reveal">Book Your Detail</a>
+  <section class="ledger" aria-label="What we clean off">
+    <div class="wrap ledger-inner">
+      <p class="ledger-label">What comes off</p>
+      <ul class="ledger-list">
+        <li>Red clay</li>
+        <li>Pine sap</li>
+        <li>Oak pollen</li>
+        <li>Bug splatter</li>
+        <li>Brake dust</li>
+        <li>Hard water spots</li>
+        <li>Dog hair</li>
+        <li>Mystery crumbs</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section pine" id="services">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Services and prices</p>
+        <h2>Pick your detail.</h2>
+        <p>These are starting prices. The final price depends on condition, like how much dirt, hair, or staining there is. Send a few photos and you'll get an exact price before any work starts.</p>
       </div>
-      <div class="reveal rounded-lg flex flex-col items-center justify-center gap-5 py-24" style="background:#EEF4FB;border:2px dashed rgba(33,150,232,0.25);">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#94B0C8" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-        <div class="text-center">
-          <div class="heading text-3xl md:text-4xl mb-2" style="color:#1E3550;">Photos Coming Soon</div>
-          <p class="text-sm" style="color:#6B8DA8;font-weight:300;">Real before &amp; after shots from completed details will appear here.</p>
+      <div class="svc-grid reveal">
+        <div class="price-card">
+          <div class="price-head">
+            <h3>Basic details</h3>
+            <span>Starting prices</span>
+          </div>
+          <!-- Explicit roles keep table semantics when mobile CSS changes the display type. -->
+          <table class="prices" role="table" aria-label="Starting prices for basic details by vehicle type">
+            <thead role="rowgroup">
+              <tr role="row">
+                <th role="columnheader" scope="col"><span class="sr-only">Service</span></th>
+                <th role="columnheader" scope="col">Sedan</th>
+                <th role="columnheader" scope="col">Truck</th>
+                <th role="columnheader" scope="col">SUV</th>
+              </tr>
+            </thead>
+            <tbody role="rowgroup">
+              <tr role="row">
+                <th role="rowheader" scope="row">Exterior<span>Foam pre-wash, hand wash, wheels, tires, and glass</span></th>
+                <td role="cell" data-label="Sedan">$80</td>
+                <td role="cell" data-label="Truck">$100</td>
+                <td role="cell" data-label="SUV">$100</td>
+              </tr>
+              <tr role="row">
+                <th role="rowheader" scope="row">Interior<span>Vacuum, wipe-down, seats and carpet spot-treated, inside glass</span></th>
+                <td role="cell" data-label="Sedan">$140</td>
+                <td role="cell" data-label="Truck">$140</td>
+                <td role="cell" data-label="SUV">$160</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="price-note">Heavy dirt, pet hair, or deep stains can raise the price. You always get the number before we start.</p>
+          <div class="price-ctas">
+            <a class="card-cta" href="#book" data-service="Basic exterior">Book exterior</a>
+            <a class="card-cta" href="#book" data-service="Basic interior">Book interior</a>
+          </div>
         </div>
+        <article class="card">
+          <h3>Paint correction</h3>
+          <p class="price">From $500</p>
+          <p class="for">Full body. Machine polishing that takes out swirls, light scratches, and dull, oxidized paint.</p>
+          <a class="card-cta" href="#book" data-service="Paint correction">Book paint correction</a>
+        </article>
+        <article class="card featured">
+          <h3>Ceramic coating</h3>
+          <p class="price">$750 to $1,200</p>
+          <p class="for">A hard, glossy layer on the paint so dirt and water slide off and every wash gets easier.</p>
+          <a class="card-cta" href="#book" data-service="Ceramic coating">Book ceramic coating</a>
+        </article>
+      </div>
+      <div class="addons reveal">
+        <p class="addons-label">Add-ons for any service</p>
+        <ul class="chips">
+          <li>Pet hair removal</li>
+          <li>Engine bay</li>
+          <li>Headlight restoration</li>
+          <li>Clay bar</li>
+          <li>Seat shampoo</li>
+          <li>Odor treatment</li>
+        </ul>
       </div>
     </div>
   </section>
 
-  <!-- ══════════ SCHEDULING ══════════ -->
-  <section id="schedule" class="py-24 md:py-32 px-6 md:px-12 lg:px-24 relative overflow-hidden" style="background:#FFFFFF;">
-    <div class="orb-soft w-[600px] h-[600px] left-0 bottom-0" style="transform:translate(-40%,40%);" aria-hidden="true"></div>
-    <div class="max-w-4xl mx-auto">
-      <div class="text-center mb-12">
-        <div class="label mb-3 reveal">Book Online</div>
-        <h2 class="heading reveal" style="font-size:clamp(2.4rem,6vw,4.5rem);color:#0B1829;">Schedule Your Detail</h2>
-        <p class="mt-4 max-w-xl mx-auto reveal" style="color:#5A7A92;line-height:1.8;font-weight:300;">Pick a time and we&rsquo;ll come to you. No pressure, no surprises.</p>
+  <section class="section silver" id="how">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">How it works</p>
+        <h2>Three steps to a clean truck.</h2>
       </div>
-      <div class="rounded-lg overflow-hidden reveal" style="border:1px solid rgba(33,150,232,0.18);min-height:700px;background:#F5F8FC;box-shadow:0 4px 30px rgba(14,30,60,0.06);">
-        <!--
-          CALENDLY SETUP:
-          1. Sign up at calendly.com
-          2. Create event: "Full Mobile Detail"
-          3. Replace YOUR_CALENDLY_USERNAME below
-        -->
-        <div class="calendly-inline-widget"
-             data-url="https://calendly.com/rileyarias474/mother-lode-detailing?background_color=F5F8FC&text_color=0B1829&primary_color=2196E8"
-             style="min-width:320px;height:700px;"></div>
-        <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
-        <noscript>
-          <div class="p-12 text-center">
-            <p style="color:#5A7A92;" class="mb-6">To book, call or text Riley directly:</p>
-            <a href="tel:+15595055164" class="btn btn-blue">Call (559) 505-5164</a>
-          </div>
-        </noscript>
+      <div class="track">
+        <svg class="vein" viewBox="0 0 960 40" preserveAspectRatio="none" aria-hidden="true">
+          <path pathLength="1" d="M0 20 C 80 6, 160 34, 240 20 S 400 6, 480 20 S 640 34, 720 20 S 880 6, 960 20"/>
+        </svg>
+        <ol class="steps reveal">
+          <li class="step">
+            <span class="step-n" aria-hidden="true">1</span>
+            <h3>Send a few photos</h3>
+            <p>Text or email pictures of the inside and outside, with the year, make, and model.</p>
+          </li>
+          <li class="step">
+            <span class="step-n" aria-hidden="true">2</span>
+            <h3>Get a price and a day</h3>
+            <p>We reply with a quote and the next open days. Pick the one that works.</p>
+          </li>
+          <li class="step">
+            <span class="step-n" aria-hidden="true">3</span>
+            <h3>Get it back clean</h3>
+            <p>We do the work, and you drive off in a truck that looks right again.</p>
+          </li>
+        </ol>
       </div>
     </div>
   </section>
 
-  <!-- ══════════ QUOTE + CONTACT ══════════ -->
-  <section id="quote" class="py-24 md:py-32 px-6 md:px-12 lg:px-24" style="background:#F5F8FC;">
-    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
-      <div>
-        <div class="label mb-3 reveal">Contact &amp; Payment</div>
-        <h2 class="heading reveal" style="font-size:clamp(2.2rem,5vw,3.8rem);color:#0B1829;margin-bottom:1.4rem;">Questions?<br>Ready to Book?</h2>
-        <div class="divider mb-8 max-w-[140px] reveal"></div>
-        <p class="mb-8 reveal" style="color:#5A7A92;line-height:1.8;font-weight:300;">Send a message or reach out directly. Riley responds same day.</p>
-        <div class="space-y-5 reveal">
-          <a href="tel:+15595055164" class="flex items-center gap-4 group p-1">
-            <div class="w-11 h-11 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(33,150,232,0.08);border:1px solid rgba(33,150,232,0.2);">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#2196E8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.82a19.79 19.79 0 01-3.07-8.68A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-            </div>
-            <div>
-              <div class="font-display" style="color:#6B8DA8;font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;">Call / Text</div>
-              <div class="font-display font-bold group-hover:text-[#2196E8] transition-colors" style="color:#0B1829;font-size:1.15rem;">(559) 505-5164</div>
-            </div>
-          </a>
-          <div class="flex items-center gap-4">
-            <div class="w-11 h-11 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(33,150,232,0.08);border:1px solid rgba(33,150,232,0.2);">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#2196E8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            </div>
-            <div>
-              <div class="font-display" style="color:#6B8DA8;font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;">Service Area</div>
-              <div style="color:#0B1829;font-size:0.95rem;">Calaveras County &amp; surrounding areas</div>
-            </div>
-          </div>
-        </div>
-        <div class="mt-10 p-6 rounded-lg reveal" style="background:#FFFFFF;border:1px solid rgba(33,150,232,0.18);box-shadow:0 2px 16px rgba(14,30,60,0.05);">
-          <div class="font-display font-semibold mb-3" style="color:#1A78C8;font-size:0.75rem;letter-spacing:0.16em;text-transform:uppercase;">Payment</div>
-          <p class="text-sm mb-5" style="color:#5A7A92;line-height:1.75;font-weight:300;">We accept cash, Venmo, or Apple Pay at the moment. Payment is due upon completion of service.</p>
-          <div class="flex items-center gap-3">
-            <div class="flex-1 flex items-center justify-center gap-2 py-3 rounded" style="background:#F5F8FC;border:1px solid rgba(33,150,232,0.15);">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A78C8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/></svg>
-              <span class="font-display font-semibold" style="color:#1E3550;font-size:0.82rem;letter-spacing:0.06em;">Cash</span>
-            </div>
-            <div class="flex-1 flex items-center justify-center gap-2 py-3 rounded" style="background:#F5F8FC;border:1px solid rgba(33,150,232,0.15);">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A78C8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-              <span class="font-display font-semibold" style="color:#1E3550;font-size:0.82rem;letter-spacing:0.06em;">Venmo</span>
-            </div>
-            <div class="flex-1 flex items-center justify-center gap-2 py-3 rounded" style="background:#F5F8FC;border:1px solid rgba(33,150,232,0.15);">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A78C8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.94c1.5 0 2.75-.25 3.75-1.06C17.5 18.75 18 17.5 18 16c0-1.5-.5-2.75-1.5-3.5S14.5 11.5 14 10c-.5-1.5-.5-3 .5-4.5"/><path d="M9 6c-1 1.5-1 3-.5 4.5-.5 1.5-2 2.5-3 3.5-1 1-1.5 2-1.5 3.5 0 1.5.5 2.75 1.75 3.88C6.75 22.5 8.25 23 10 23"/></svg>
-              <span class="font-display font-semibold" style="color:#1E3550;font-size:0.82rem;letter-spacing:0.06em;">Apple Pay</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
+  <section class="section area" id="area">
+    <div class="wrap">
       <div class="reveal">
-        <form id="qform" novalidate aria-label="Request a quote"
-              style="background:#FFFFFF;border:1px solid rgba(33,150,232,0.18);border-radius:6px;padding:2.4rem;box-shadow:0 4px 30px rgba(14,30,60,0.06);">
-          <!-- Honeypot -->
-          <div style="position:absolute;left:-99999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
-            <label for="hp">Leave blank</label>
-            <input type="text" id="hp" name="hp_field" tabindex="-1" autocomplete="off">
+        <p class="eyebrow">Where we work</p>
+        <h2 class="county"><span>Calaveras</span> <span>County</span> <em>and Lodi</em></h2>
+        <p class="area-sub">Up and down Highways 4, 49, 26, and 12, from Arnold down to Lodi.</p>
+      </div>
+      <div class="routes reveal">
+        <div class="route">
+          <p class="route-name">Highway 4</p>
+          <ul>
+            <li>Copperopolis</li>
+            <li>Vallecito</li>
+            <li>Murphys</li>
+            <li>Avery</li>
+            <li>Hathaway Pines</li>
+            <li>Arnold</li>
+          </ul>
+        </div>
+        <div class="route">
+          <p class="route-name">Highway 49</p>
+          <ul>
+            <li>Angels Camp</li>
+            <li>San Andreas</li>
+            <li>Mokelumne Hill</li>
+          </ul>
+        </div>
+        <div class="route">
+          <p class="route-name">Highways 12 and 26</p>
+          <ul>
+            <li>Lodi</li>
+            <li>Valley Springs</li>
+            <li>Glencoe</li>
+            <li>West Point</li>
+          </ul>
+        </div>
+      </div>
+      <p class="area-note">Out on a back road, or just over the line in Amador or Tuolumne? Ask anyway.</p>
+    </div>
+  </section>
+
+  <section class="section silver" id="faq">
+    <div class="wrap faq-wrap">
+      <div class="sec-head">
+        <p class="eyebrow">FAQ</p>
+        <h2>Good questions.</h2>
+      </div>
+      <div class="faq-list">
+        <details>
+          <summary>How much does a detail cost?</summary>
+          <p>A basic exterior starts at $80 for sedans and $100 for trucks and SUVs. A basic interior starts at $140 for sedans and trucks and $160 for SUVs. Paint correction starts at $500, and ceramic coatings run $750 to $1,200. The final price depends on condition, so send a few photos for an exact quote.</p>
+        </details>
+        <details>
+          <summary>Why does condition change the price?</summary>
+          <p>A truck with a season of red clay, pet hair, or deep stains takes a lot more time than one that gets washed every month. Photos let us see that up front, so there are no surprises.</p>
+        </details>
+        <details>
+          <summary>How long does it take?</summary>
+          <p>That depends on the vehicle and the service. We'll give you a time estimate when we confirm your day.</p>
+        </details>
+        <details>
+          <summary>Do you only do trucks?</summary>
+          <p>No. Sedans, trucks, and SUVs are all welcome. Trucks just see the most red dirt around here.</p>
+        </details>
+        <details>
+          <summary>What should I do before my detail?</summary>
+          <p>Take out anything valuable and anything you don't want moved. Leave the rest to us.</p>
+        </details>
+        <details>
+          <summary>How do I book?</summary>
+          <p>Use the form below, or call or text us. We'll reply to confirm a price and a day.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section pine book" id="book">
+    <div class="wrap book-grid">
+      <div class="book-copy reveal">
+        <p class="eyebrow">Book</p>
+        <h2>Get on the schedule.</h2>
+        <p>Fill this in and we'll get back to you with a price and the next open day. A couple of photos help us quote it right.</p>
+        <dl class="contact">
+          <div><dt>Call or text</dt><dd><a data-contact="phone" href="tel:+15595055164">(559) 505-5164</a></dd></div>
+          <div><dt>Email</dt><dd><a data-contact="email" href="mailto:arias.riley@yahoo.com">arias.riley@yahoo.com</a></dd></div>
+          <div><dt>Service area</dt><dd>Calaveras County and Lodi, California</dd></div>
+        </dl>
+      </div>
+
+      <div class="book-panel">
+        <noscript>
+          <p class="noscript-note">Call or text <a href="tel:+15595055164">(559) 505-5164</a> or email <a href="mailto:arias.riley@yahoo.com">arias.riley@yahoo.com</a> with your name, vehicle, and the service you want.</p>
+        </noscript>
+        <!-- Hidden until main.js attaches the handlers, so a script failure can never submit personal details into the page URL. -->
+        <form class="book-form" novalidate hidden>
+          <div class="field">
+            <label for="f-name">Your name</label>
+            <input id="f-name" name="name" autocomplete="name" maxlength="80" required>
           </div>
-          <div class="grid grid-cols-2 gap-4 mb-4">
-            <div>
-              <label for="fn" class="block mb-2 font-display" style="color:#6B8DA8;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;">First Name *</label>
-              <input type="text" id="fn" name="first_name" class="finput" placeholder="John" required autocomplete="given-name" maxlength="100">
-            </div>
-            <div>
-              <label for="ln" class="block mb-2 font-display" style="color:#6B8DA8;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;">Last Name *</label>
-              <input type="text" id="ln" name="last_name" class="finput" placeholder="Smith" required autocomplete="family-name" maxlength="100">
-            </div>
+          <div class="field">
+            <label for="f-phone">Phone</label>
+            <input id="f-phone" name="phone" type="tel" autocomplete="tel" maxlength="30" required>
           </div>
-          <div class="mb-4">
-            <label for="ph" class="block mb-2 font-display" style="color:#6B8DA8;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;">Phone *</label>
-            <input type="tel" id="ph" name="phone" class="finput" placeholder="(209) 555-0100" required autocomplete="tel" maxlength="20">
+          <div class="field full">
+            <label for="f-vehicle">Vehicle</label>
+            <input id="f-vehicle" name="vehicle" placeholder="2004 Chevy Silverado 2500HD" maxlength="100" required>
           </div>
-          <div class="mb-4">
-            <label for="em" class="block mb-2 font-display" style="color:#6B8DA8;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;">Email</label>
-            <input type="email" id="em" name="email" class="finput" placeholder="john@example.com" autocomplete="email" maxlength="254">
-          </div>
-          <div class="mb-4">
-            <label for="veh" class="block mb-2 font-display" style="color:#6B8DA8;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;">Vehicle *</label>
-            <input type="text" id="veh" name="vehicle" class="finput" placeholder="2020 Ford F-150, Black" required maxlength="150">
-          </div>
-          <div class="mb-4">
-            <label for="svc" class="block mb-2 font-display" style="color:#6B8DA8;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;">Service *</label>
-            <select id="svc" name="service" class="finput" required style="appearance:none;cursor:pointer;background-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B8DA8%22 stroke-width=%222%22%3E%3Cpath d=%22M6 9l6 6 6-6%22/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 14px center;">
-              <option value="" disabled selected>Select a service...</option>
-              <option value="full-detail">Full Mother Lode Detail</option>
-              <option value="other">Other / Not Sure</option>
+          <div class="field">
+            <label for="f-service">Service</label>
+            <select id="f-service" name="service" required>
+              <option value="">Choose one</option>
+              <option>Basic exterior</option>
+              <option>Basic interior</option>
+              <option>Interior and exterior</option>
+              <option>Paint correction</option>
+              <option>Ceramic coating</option>
+              <option>Not sure yet</option>
             </select>
           </div>
-          <div class="mb-6">
-            <label for="msg" class="block mb-2 font-display" style="color:#6B8DA8;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;">Notes</label>
-            <textarea id="msg" name="message" class="finput" rows="3" maxlength="1500" placeholder="Any details about your vehicle or location..." style="resize:vertical;"></textarea>
+          <div class="field">
+            <label for="f-town">Town <span class="opt">Optional</span></label>
+            <input id="f-town" name="town" list="town-list" autocomplete="address-level2" maxlength="60">
+            <datalist id="town-list">
+              <option value="Angels Camp"><option value="Arnold"><option value="Avery"><option value="Copperopolis"><option value="Glencoe"><option value="Hathaway Pines"><option value="Lodi"><option value="Mokelumne Hill"><option value="Murphys"><option value="San Andreas"><option value="Vallecito"><option value="Valley Springs"><option value="West Point">
+            </datalist>
           </div>
-          <div id="ferr" role="alert" aria-live="assertive" class="hidden mb-4 p-4 rounded text-sm" style="background:rgba(180,50,50,0.07);border:1px solid rgba(180,50,50,0.22);color:#DC3545;"></div>
-          <div id="fok"  role="status" aria-live="polite"   class="hidden mb-4 p-4 rounded text-sm" style="background:rgba(33,150,232,0.08);border:1px solid rgba(33,150,232,0.22);color:#1A78C8;"></div>
-          <button type="submit" class="btn btn-blue w-full text-center" style="width:100%;">Send Message</button>
-          <p class="text-center mt-4" style="color:#A0BAD0;font-size:0.7rem;line-height:1.6;">
-            By submitting you agree to our
-            <button type="button" onclick="openModal('pm')" class="underline hover:text-[#2196E8] transition-colors bg-transparent border-none cursor-pointer" style="color:#94B0C8;">Privacy Policy</button>
-            and
-            <button type="button" onclick="openModal('tm')" class="underline hover:text-[#2196E8] transition-colors bg-transparent border-none cursor-pointer" style="color:#94B0C8;">Terms of Service</button>.
-          </p>
+          <div class="field full">
+            <label for="f-when">Days that work <span class="opt">Optional</span></label>
+            <input id="f-when" name="when" placeholder="Weekends, or weekdays after 3pm" maxlength="120">
+          </div>
+          <div class="field full">
+            <label for="f-notes">Anything we should know? <span class="opt">Optional</span></label>
+            <textarea id="f-notes" name="notes" rows="3" placeholder="Dog hair in the back seat, sap on the hood" maxlength="1000"></textarea>
+          </div>
+          <p class="form-error full" role="alert" hidden></p>
+          <div class="form-actions full">
+            <button class="btn btn-gold" type="submit">Text my request</button>
+            <button class="alt-send" type="button">Send by email instead</button>
+          </div>
+          <p class="form-fine full"><span class="fine-method">This opens your texting app with everything filled in. Nothing sends until you hit send.</span> We only use your details to reply to your request. <a href="privacy.html">Privacy policy</a></p>
         </form>
-      </div>
-    </div>
-  </section>
 
-  <!-- ══════════ ABOUT ══════════ -->
-  <section id="about" class="py-24 md:py-32 px-6 md:px-12 lg:px-24 relative overflow-hidden" style="background:#FFFFFF;">
-    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-      <div class="gal-item reveal-left rounded-lg" style="aspect-ratio:4/5;">
-        <img src="https://placehold.co/600x750/EBF4FD/1A78C8?text=Riley+Arias" alt="Riley Arias, owner of Mother Lode Detailing" loading="lazy">
-        <div class="gal-overlay"></div>
-      </div>
-      <div>
-        <div class="label mb-3 reveal-right">About</div>
-        <h2 class="heading reveal-right" style="font-size:clamp(2.2rem,5vw,3.8rem);color:#0B1829;margin-bottom:1.4rem;">Driven by Pride in the Work</h2>
-        <div class="divider mb-8 max-w-[140px] reveal-right"></div>
-        <p class="mb-5 reveal-right" style="color:#3A556B;line-height:1.82;font-weight:300;">Mother Lode Detailing was built on the same values as the gold country it&rsquo;s named after — hard work, attention to detail, and pride in what you put your name on.</p>
-        <p class="mb-8 reveal-right" style="color:#3A556B;line-height:1.82;font-weight:300;">Riley Arias brings professional-grade tools and technique to your driveway in Calaveras County. No shortcuts, no rushing — just results you can see and feel.</p>
-        <div class="flex flex-col sm:flex-row gap-4 reveal-right">
-          <a href="#schedule" class="btn btn-blue">Book Your Detail</a>
-          <a href="tel:+15595055164" class="btn btn-outline">Call Riley</a>
+        <div class="book-done" tabindex="-1" hidden>
+          <p class="eyebrow">Almost done</p>
+          <h3>Hit send in your <span class="done-app">texting app</span>.</h3>
+          <p>Your request is filled in and ready. Add a couple of photos of the truck before you send it.</p>
+          <p class="done-fallback">Didn't open? Call or text <a data-contact="phone" href="tel:+15595055164">(559) 505-5164</a>.</p>
+          <button class="btn btn-ghost done-edit" type="button">Edit my request</button>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ══════════ FOOTER — keep dark ══════════ -->
-  <footer role="contentinfo" style="background:#04050F;border-top:1px solid rgba(33,150,232,0.12);">
-    <div class="max-w-6xl mx-auto px-6 md:px-12 lg:px-24 py-16">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-        <div>
-          <img src="Mother_Lode_Detailing_transparent.png" alt="Mother Lode Detailing" class="logo-img h-16 w-auto object-contain mb-4" style="filter:drop-shadow(0 2px 10px rgba(33,150,232,0.3));">
-          <p style="color:#4A6080;line-height:1.8;font-weight:300;font-size:0.875rem;max-width:260px;">Premium mobile auto detailing in Calaveras County. We come to you.</p>
-        </div>
-        <nav aria-label="Footer navigation">
-          <div class="font-display font-semibold mb-5" style="color:#2A3870;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;">Navigation</div>
-          <ul class="space-y-3 list-none p-0 m-0">
-            <li><a href="#services"     class="text-sm transition-colors hover:text-[#60C8FF]" style="color:#4A6080;">Services</a></li>
-            <li><a href="#how-it-works" class="text-sm transition-colors hover:text-[#60C8FF]" style="color:#4A6080;">How It Works</a></li>
-            <li><a href="#gallery"      class="text-sm transition-colors hover:text-[#60C8FF]" style="color:#4A6080;">Gallery</a></li>
-            <li><a href="#schedule"     class="text-sm transition-colors hover:text-[#60C8FF]" style="color:#4A6080;">Book Now</a></li>
-            <li><button onclick="openModal('pm')" class="text-sm transition-colors hover:text-[#60C8FF] bg-transparent border-none cursor-pointer p-0 text-left" style="color:#4A6080;">Privacy Policy</button></li>
-            <li><button onclick="openModal('tm')" class="text-sm transition-colors hover:text-[#60C8FF] bg-transparent border-none cursor-pointer p-0 text-left" style="color:#4A6080;">Terms of Service</button></li>
-          </ul>
-        </nav>
-        <div>
-          <div class="font-display font-semibold mb-5" style="color:#2A3870;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;">Contact</div>
-          <div class="space-y-3">
-            <div><a href="tel:+15595055164" class="text-sm transition-colors hover:text-[#60C8FF]" style="color:#4A6080;">(559) 505-5164</a></div>
-            <div class="text-sm" style="color:#4A6080;">Calaveras County, CA</div>
-            <div class="text-sm" style="color:#4A6080;">100% Mobile Service</div>
-          </div>
-        </div>
-      </div>
-      <div class="divider mb-6"></div>
-      <div class="flex flex-col md:flex-row justify-between items-center gap-3" style="font-size:0.7rem;color:#2A3870;">
-        <p>&copy; <span id="yr"></span> Mother Lode Detailing. All rights reserved.</p>
-        <p>Serving Calaveras County, CA</p>
-      </div>
-    </div>
-  </footer>
+</main>
 
-  <!-- ══════════ PRIVACY MODAL ══════════ -->
-  <div id="pm" role="dialog" aria-modal="true" aria-labelledby="pm-title" class="hidden fixed inset-0 z-50 flex items-center justify-center p-6">
-    <div class="modal-bg absolute inset-0" onclick="closeModal('pm')"></div>
-    <div class="relative w-full max-w-2xl max-h-[82vh] overflow-y-auto rounded-lg p-8" style="background:#FFFFFF;border:1px solid rgba(33,150,232,0.2);box-shadow:0 20px 80px rgba(11,24,41,0.25);">
-      <button onclick="closeModal('pm')" aria-label="Close" class="absolute top-4 right-4 p-1 transition-colors" style="color:#94B0C8;" onmouseover="this.style.color='#0B1829'" onmouseout="this.style.color='#94B0C8'">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
-      <h2 id="pm-title" class="heading text-3xl mb-6" style="color:#0B1829;">Privacy Policy</h2>
-      <div class="text-sm space-y-4" style="line-height:1.8;font-weight:300;color:#3A556B;">
-        <p><strong style="color:#0B1829;">Effective Date:</strong> January 1, 2026</p>
-        <p>Mother Lode Detailing collects name, phone, email, and vehicle info submitted through our forms solely to schedule and provide detailing services. We do not sell or share your data for marketing.</p>
-        <p><strong style="color:#0B1829;">Payment:</strong> Processed by Stripe, Inc. We do not store card information.</p>
-        <p><strong style="color:#0B1829;">Scheduling:</strong> Booking data handled by Calendly, LLC.</p>
-        <p><strong style="color:#0B1829;">Cookies:</strong> Session cookies only — no tracking or advertising cookies.</p>
-        <p><strong style="color:#0B1829;">Your Rights:</strong> Request access, correction, or deletion at (559) 505-5164.</p>
-        <p><strong style="color:#0B1829;">Contact:</strong> Mother Lode Detailing — Calaveras County, CA — (559) 505-5164</p>
-      </div>
+<footer class="footer">
+  <div class="wrap footer-grid">
+    <img class="footer-logo" src="assets/logo-320.png" width="320" height="265" loading="lazy" alt="Mother Lode Detailing">
+    <div class="footer-info">
+      <p class="footer-name">Mother Lode Detailing</p>
+      <p>Auto detailing in Calaveras County and Lodi, California</p>
+      <p><a data-contact="phone" href="tel:+15595055164">(559) 505-5164</a> · <a data-contact="email" href="mailto:arias.riley@yahoo.com">arias.riley@yahoo.com</a></p>
     </div>
+    <ul class="social" aria-label="Social media" hidden></ul>
   </div>
-
-  <!-- ══════════ TERMS MODAL ══════════ -->
-  <div id="tm" role="dialog" aria-modal="true" aria-labelledby="tm-title" class="hidden fixed inset-0 z-50 flex items-center justify-center p-6">
-    <div class="modal-bg absolute inset-0" onclick="closeModal('tm')"></div>
-    <div class="relative w-full max-w-2xl max-h-[82vh] overflow-y-auto rounded-lg p-8" style="background:#FFFFFF;border:1px solid rgba(33,150,232,0.2);box-shadow:0 20px 80px rgba(11,24,41,0.25);">
-      <button onclick="closeModal('tm')" aria-label="Close" class="absolute top-4 right-4 p-1 transition-colors" style="color:#94B0C8;" onmouseover="this.style.color='#0B1829'" onmouseout="this.style.color='#94B0C8'">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
-      <h2 id="tm-title" class="heading text-3xl mb-6" style="color:#0B1829;">Terms of Service</h2>
-      <div class="text-sm space-y-4" style="line-height:1.8;font-weight:300;color:#3A556B;">
-        <p><strong style="color:#0B1829;">Effective Date:</strong> January 1, 2026</p>
-        <p>By booking or using this site you agree to these terms.</p>
-        <p><strong style="color:#0B1829;">Services:</strong> Mobile auto detailing in Calaveras County. All work subject to a booking confirmation.</p>
-        <p><strong style="color:#0B1829;">Cancellation:</strong> 24-hour notice required. Late cancellations may incur a fee.</p>
-        <p><strong style="color:#0B1829;">Vehicle Condition:</strong> Customer must disclose pre-existing damage. We are not liable for pre-existing issues discovered during service.</p>
-        <p><strong style="color:#0B1829;">Satisfaction Guarantee:</strong> Not satisfied? Notify us within 24 hours and we&rsquo;ll return to address concerns at no charge.</p>
-        <p><strong style="color:#0B1829;">Payment:</strong> Due upon completion. Online payments processed through Stripe.</p>
-        <p><strong style="color:#0B1829;">Liability:</strong> Limited to the value of the service provided. Not responsible for items left in the vehicle.</p>
-        <p><strong style="color:#0B1829;">Governing Law:</strong> California law — Calaveras County jurisdiction.</p>
-        <p><strong style="color:#0B1829;">Contact:</strong> Mother Lode Detailing — Calaveras County, CA — (559) 505-5164</p>
-      </div>
-    </div>
+  <div class="wrap footer-fine">
+    <p>© <span class="year">2026</span> Mother Lode Detailing</p>
+    <ul class="legal-links">
+      <li><a href="privacy.html">Privacy policy</a></li>
+      <li><a href="terms.html">Terms of use</a></li>
+      <li><a href="accessibility.html">Accessibility</a></li>
+      <li><a href="#top">Back to top</a></li>
+    </ul>
   </div>
-
-  <!-- YouTube background -->
-  <script>
-    (function(){ var s=document.createElement('script'); s.src='https://www.youtube.com/iframe_api'; document.head.appendChild(s); })();
-    function onYouTubeIframeAPIReady(){
-      new YT.Player('yt-player',{
-        videoId:'Ac8X4oWdAXU',
-        playerVars:{ autoplay:1,mute:1,controls:0,loop:1,playlist:'Ac8X4oWdAXU',playsinline:1,rel:0,showinfo:0,modestbranding:1,disablekb:1,fs:0,iv_load_policy:3,start:0 },
-        events:{
-          onReady:function(e){ e.target.setVolume(0); e.target.playVideo(); }
-        }
-      });
-    }
-  </script>
-
-  <!-- Main scripts -->
-  <script>
-    const lenis = new Lenis({ duration:1.3, easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)), smoothWheel:true });
-    (function raf(t){ lenis.raf(t); requestAnimationFrame(raf); })(0);
-
-    gsap.registerPlugin(ScrollTrigger);
-    lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add(t=>lenis.raf(t*1000));
-    gsap.ticker.lagSmoothing(0);
-
-    gsap.timeline({ delay:0.3 })
-      .fromTo('#hero-logo', { opacity:0, y:20 }, { opacity:1, y:0, duration:0.8, ease:'power3.out' })
-      .fromTo('#h-label',  { opacity:0, y:16 }, { opacity:1, y:0, duration:0.7, ease:'power3.out' }, '-=0.4')
-      .fromTo('#h-head',   { opacity:0, y:60 }, { opacity:1, y:0, duration:1,   ease:'power3.out' }, '-=0.4')
-      .fromTo('#h-sub',    { opacity:0, y:28 }, { opacity:1, y:0, duration:0.8, ease:'power3.out' }, '-=0.5')
-      .fromTo('#h-cta',    { opacity:0, y:18 }, { opacity:1, y:0, duration:0.6, ease:'power3.out' }, '-=0.45');
-
-    gsap.utils.toArray('.reveal').forEach(el=>{
-      gsap.to(el,{ opacity:1, y:0, duration:0.8, ease:'power3.out', scrollTrigger:{ trigger:el, start:'top 87%', once:true } });
-    });
-    gsap.utils.toArray('.reveal-left').forEach(el=>{
-      gsap.to(el,{ opacity:1, x:0, duration:0.9, ease:'power3.out', scrollTrigger:{ trigger:el, start:'top 85%', once:true } });
-    });
-    gsap.utils.toArray('.reveal-right').forEach(el=>{
-      gsap.to(el,{ opacity:1, x:0, duration:0.9, ease:'power3.out', scrollTrigger:{ trigger:el, start:'top 85%', once:true } });
-    });
-    gsap.utils.toArray('.reveal-scale').forEach(el=>{
-      gsap.to(el,{ opacity:1, scale:1, duration:0.8, ease:'back.out(1.4)', scrollTrigger:{ trigger:el, start:'top 87%', once:true } });
-    });
-
-    gsap.utils.toArray('.gal-item').forEach((el,i)=>{
-      gsap.fromTo(el,{ opacity:0, y:40 },{ opacity:1, y:0, duration:0.7, delay:i*0.08, ease:'power3.out', scrollTrigger:{ trigger:el, start:'top 88%', once:true } });
-    });
-
-    document.querySelectorAll('.stat-num').forEach(el=>{
-      const target=+el.dataset.target, suffix=el.dataset.suffix||'';
-      ScrollTrigger.create({ trigger:el, start:'top 83%', once:true,
-        onEnter(){ gsap.to({v:0},{ v:target, duration:2, ease:'power2.out', onUpdate(){ el.textContent=Math.round(this.targets()[0].v)+suffix; } }); }
-      });
-    });
-
-    ScrollTrigger.create({ start:'top -60', onUpdate(self){ document.getElementById('nav').classList.toggle('scrolled',self.scroll()>60); } });
-    ScrollTrigger.create({ start:'top -80vh', onUpdate(self){ document.getElementById('float-cta').classList.toggle('visible',self.scroll()>window.innerHeight*0.8); } });
-    ScrollTrigger.create({ start:'top top', end:'bottom bottom', onUpdate(self){ document.getElementById('scroll-bar').style.height=(self.progress*100)+'%'; } });
-
-    const ham=document.getElementById('ham'),mobNav=document.getElementById('mob-nav');
-    const h1=document.getElementById('h1'),h2=document.getElementById('h2'),h3=document.getElementById('h3');
-    ham.addEventListener('click',()=>{
-      const open=mobNav.classList.toggle('open');
-      ham.setAttribute('aria-expanded',open);
-      h1.style.transform=open?'rotate(45deg) translate(5px,5px)':'';
-      h2.style.opacity=open?'0':'1';
-      h3.style.transform=open?'rotate(-45deg) translate(5px,-5px)':'';
-      document.body.style.overflow=open?'hidden':'';
-    });
-    function closeNav(){ mobNav.classList.remove('open'); ham.setAttribute('aria-expanded','false'); h1.style.transform=h3.style.transform=''; h2.style.opacity='1'; document.body.style.overflow=''; }
-
-    function openModal(id){ const m=document.getElementById(id); m.classList.remove('hidden'); document.body.style.overflow='hidden'; m.querySelector('button').focus(); }
-    function closeModal(id){ document.getElementById(id).classList.add('hidden'); document.body.style.overflow=''; }
-    document.addEventListener('keydown',e=>{ if(e.key==='Escape') document.querySelectorAll('[role="dialog"]:not(.hidden)').forEach(m=>closeModal(m.id)); });
-
-    document.getElementById('qform').addEventListener('submit',function(e){
-      e.preventDefault();
-      const err=document.getElementById('ferr'),ok=document.getElementById('fok');
-      err.classList.add('hidden'); ok.classList.add('hidden');
-      if(this.hp_field&&this.hp_field.value) return;
-      const fn=this.first_name.value.trim(),ph=this.phone.value.trim(),veh=this.vehicle.value.trim(),svc=this.service.value;
-      if(!fn||!ph||!veh||!svc){ err.textContent='Please fill out all required fields.'; err.classList.remove('hidden'); return; }
-      if(!/^[\d\s\(\)\-\+]+$/.test(ph)||ph.replace(/\D/g,'').length<10){ err.textContent='Please enter a valid 10-digit phone number.'; err.classList.remove('hidden'); return; }
-      const FID='YOUR_FORMSPREE_ID';
-      if(FID==='YOUR_FORMSPREE_ID'){ ok.textContent='Message received — Riley will reach out within 24 hours.'; ok.classList.remove('hidden'); this.reset(); return; }
-      fetch(`https://formspree.io/f/${FID}`,{ method:'POST', body:new FormData(this), headers:{Accept:'application/json'} })
-        .then(r=>{ if(r.ok){ ok.textContent="Sent! Riley will follow up soon."; ok.classList.remove('hidden'); this.reset(); } else throw new Error(); })
-        .catch(()=>{ err.textContent='Could not send. Please call (559) 505-5164 directly.'; err.classList.remove('hidden'); });
-    });
-
-    document.getElementById('yr').textContent=new Date().getFullYear();
-
-    // lift the black cover after video has been playing long enough for YouTube UI to clear
-    setTimeout(function(){
-      var c=document.getElementById('yt-cover');
-      c.style.opacity='0';
-      setTimeout(function(){ c.style.display='none'; }, 1900);
-    }, 5000);
-  </script>
-
+</footer>
 </body>
 </html>
