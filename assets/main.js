@@ -7,7 +7,7 @@ const CONTACT = {
   email: 'arias.riley@yahoo.com',
 };
 const SOCIAL = [
-  { label: 'Instagram', url: '' },
+  { label: 'Instagram', url: 'https://www.instagram.com/motherlodedetailing/' },
   { label: 'Facebook', url: 'https://www.facebook.com/motherlodedetailing' },
   { label: 'Google reviews', url: 'https://www.google.com/maps?cid=17763241738423924689' },
   { label: 'TikTok', url: '' },
