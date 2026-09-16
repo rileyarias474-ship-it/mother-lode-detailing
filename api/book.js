@@ -2,7 +2,10 @@
 // No database: the email is the record. Nothing is logged but the outcome.
 
 const TO = process.env.BOOKING_TO || 'arias.riley@yahoo.com';
-const FROM = process.env.BOOKING_FROM || 'Mother Lode Detailing <onboarding@resend.dev>';
+// The Resend integration provisions a sending domain and sets RESEND_EMAIL_DOMAIN.
+const DOMAIN = process.env.RESEND_EMAIL_DOMAIN;
+const FROM = process.env.BOOKING_FROM
+  || (DOMAIN ? `Mother Lode Detailing <bookings@${DOMAIN}>` : 'Mother Lode Detailing <onboarding@resend.dev>');
 const SERVICES = [
   'Basic exterior',
   'Basic interior',
