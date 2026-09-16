@@ -420,6 +420,24 @@ function initDust() {
   ready.then(() => setTimeout(() => { if (grid) intro(); }, 450));
 }
 
+const MAX_PHOTOS = 4;
+const MAX_EDGE = 1500;
+
+// Re-encoding in the browser shrinks the upload and drops EXIF, so a photo's
+// location data never leaves the customer's phone.
+async function shrinkPhoto(file) {
+  const bitmap = await createImageBitmap(file);
+  const scale = Math.min(1, MAX_EDGE / Math.max(bitmap.width, bitmap.height));
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.round(bitmap.width * scale);
+  canvas.height = Math.round(bitmap.height * scale);
+  canvas.getContext('2d').drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  if (bitmap.close) bitmap.close();
+  let data = canvas.toDataURL('image/jpeg', 0.82);
+  if (data.length > 1_400_000) data = canvas.toDataURL('image/jpeg', 0.6);
+  return data;
+}
+
 function initBooking() {
   const form = document.querySelector('.book-form');
   if (!form) return;
@@ -429,14 +447,15 @@ function initBooking() {
   const submit = form.querySelector('button[type="submit"]');
   const alt = form.querySelector('.alt-send');
   const fine = form.querySelector('.fine-method');
-  const primary = coarsePointer ? 'sms' : 'email';
-  const other = primary === 'sms' ? 'email' : 'sms';
+  const photoInput = form.elements.photos;
+  const photoList = form.querySelector('.photo-list');
+  const opened = Date.now();
+  const handoff = coarsePointer ? 'sms' : 'email';
+  let photos = [];
+  let sending = false;
 
-  submit.textContent = primary === 'sms' ? 'Text my request' : 'Email my request';
-  alt.textContent = primary === 'sms' ? 'Send by email instead' : 'Send by text instead';
-  fine.textContent = primary === 'sms'
-    ? 'This opens your texting app with everything filled in. Nothing sends until you hit send.'
-    : 'This opens your email app with everything filled in. Nothing sends until you hit send.';
+  alt.textContent = handoff === 'sms' ? 'Send by text instead' : 'Send by email instead';
+  fine.textContent = 'Your request comes straight to us, photos and all.';
 
   for (const cta of document.querySelectorAll('.card-cta[data-service]')) {
     cta.addEventListener('click', () => { form.elements.service.value = cta.dataset.service; });
@@ -461,50 +480,144 @@ function initBooking() {
         first = first || el;
       }
     }
-    if (!missing.length) {
-      errorEl.hidden = true;
-      return true;
+    if (missing.length) {
+      const list = missing.length > 1 ? `${missing.slice(0, -1).join(', ')} and ${missing.at(-1)}` : missing[0];
+      fail(`Add ${list} so we can quote it.`);
+      first.focus();
+      return false;
     }
-    const list = missing.length > 1 ? `${missing.slice(0, -1).join(', ')} and ${missing.at(-1)}` : missing[0];
-    errorEl.textContent = `Add ${list} so we can quote it.`;
+    const phone = form.elements.phone;
+    const digits = (phone.value.match(/\d/g) || []).length;
+    if (digits < 10) {
+      phone.setAttribute('aria-invalid', 'true');
+      fail('That phone number looks short. We need all ten digits to text you back.');
+      phone.focus();
+      return false;
+    }
+    errorEl.hidden = true;
+    return true;
+  }
+
+  function fail(message) {
+    errorEl.textContent = message;
     errorEl.hidden = false;
-    first.focus();
-    return false;
+  }
+
+  function values() {
+    const v = name => form.elements[name].value.trim();
+    return {
+      name: v('name'),
+      phone: v('phone'),
+      vehicle: v('vehicle'),
+      service: v('service'),
+      town: v('town'),
+      when: v('when'),
+      notes: v('notes'),
+    };
   }
 
   function compose() {
-    const v = name => form.elements[name].value.trim();
+    const d = values();
     const lines = [
-      `Detail request from ${v('name')}`,
-      `Phone: ${v('phone')}`,
-      `Vehicle: ${v('vehicle')}`,
-      `Service: ${v('service')}`,
+      `Detail request from ${d.name}`,
+      `Phone: ${d.phone}`,
+      `Vehicle: ${d.vehicle}`,
+      `Service: ${d.service}`,
     ];
-    if (v('town')) lines.push(`Town: ${v('town')}`);
-    if (v('when')) lines.push(`Days that work: ${v('when')}`);
-    if (v('notes')) lines.push(`Notes: ${v('notes')}`);
+    if (d.town) lines.push(`Town: ${d.town}`);
+    if (d.when) lines.push(`Days that work: ${d.when}`);
+    if (d.notes) lines.push(`Notes: ${d.notes}`);
     return lines.join('\n');
   }
 
-  function send(method) {
-    if (!validate()) return;
-    const body = encodeURIComponent(compose());
-    const subject = encodeURIComponent(`Detail request: ${form.elements.vehicle.value.trim()}`);
-    const url = method === 'sms'
-      ? `sms:${CONTACT.phone}?&body=${body}`
-      : `mailto:${CONTACT.email}?subject=${subject}&body=${body}`;
-    window.location.href = url;
-    done.querySelector('.done-app').textContent = method === 'sms' ? 'texting app' : 'email app';
+  function finish(head, note) {
+    done.querySelector('.done-head').textContent = head;
+    done.querySelector('.done-note').textContent = note;
     form.hidden = true;
     done.hidden = false;
     done.focus();
   }
 
+  if (photoInput) {
+    photoInput.addEventListener('change', async () => {
+      const files = [...photoInput.files].slice(0, MAX_PHOTOS);
+      photoList.replaceChildren();
+      photos = [];
+      for (const file of files) {
+        const li = document.createElement('li');
+        li.textContent = `Adding ${file.name}`;
+        photoList.append(li);
+        try {
+          const data = await shrinkPhoto(file);
+          photos.push(data);
+          const img = document.createElement('img');
+          img.src = data;
+          img.alt = '';
+          const caption = document.createElement('span');
+          caption.textContent = file.name;
+          li.replaceChildren(img, caption);
+        } catch {
+          li.textContent = `Couldn't read ${file.name}. Skip it or text it to us.`;
+        }
+      }
+    });
+  }
+
+  // Hands the request to the customer's own texting or email app.
+  function handOff(method) {
+    const body = encodeURIComponent(compose());
+    const subject = encodeURIComponent(`Detail request: ${form.elements.vehicle.value.trim()}`);
+    window.location.href = method === 'sms'
+      ? `sms:${CONTACT.phone}?&body=${body}`
+      : `mailto:${CONTACT.email}?subject=${subject}&body=${body}`;
+    finish(
+      method === 'sms' ? 'Hit send in your texting app.' : 'Hit send in your email app.',
+      'Your request is filled in and ready. Nothing reaches us until you press send.'
+    );
+  }
+
+  async function send() {
+    if (sending || !validate()) return;
+    sending = true;
+    const label = submit.textContent;
+    submit.textContent = 'Sending...';
+    submit.disabled = true;
+    try {
+      const response = await fetch('/api/book', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...values(),
+          photos,
+          company: form.elements.company.value,
+          elapsed: Date.now() - opened,
+          token: crypto.randomUUID ? crypto.randomUUID() : '',
+        }),
+      });
+      const result = await response.json().catch(() => ({}));
+      // Before the mail service is wired up, quietly fall back to the customer's own app.
+      if (response.status === 503 || result.error === 'unconfigured') {
+        handOff(handoff);
+        return;
+      }
+      if (!response.ok || !result.ok) throw new Error(result.error || 'send');
+      finish('Request sent.', `We'll get back to you at ${values().phone} with a price and the next open day.`);
+    } catch {
+      fail(`That didn't send. Use "${alt.textContent}" below, or call ${CONTACT.phoneDisplay}.`);
+    } finally {
+      sending = false;
+      submit.textContent = label;
+      submit.disabled = false;
+    }
+  }
+
   form.addEventListener('submit', e => {
     e.preventDefault();
-    send(primary);
+    send();
   });
-  alt.addEventListener('click', () => send(other));
+  alt.addEventListener('click', () => {
+    if (validate()) handOff(handoff);
+  });
   form.addEventListener('input', e => {
     if (e.target.getAttribute('aria-invalid') === 'true' && e.target.value.trim()) {
       e.target.setAttribute('aria-invalid', 'false');

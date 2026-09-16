@@ -42,6 +42,7 @@ p { text-wrap: pretty; }
 
 .wrap { width: 100%; max-width: var(--wrap); margin-inline: auto; padding-inline: var(--gutter); }
 .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+[hidden] { display: none !important; }
 
 :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
 .silver :focus-visible { outline-color: var(--pine); box-shadow: 0 0 0 7px rgba(226, 174, 45, .55); }
@@ -530,6 +531,26 @@ html:not(.js) .wipe-bar { display: none; }
 }
 .alt-send:hover { color: var(--on-pine); }
 .form-fine { margin: 0; font-size: 14px; color: var(--on-pine-2); }
+.field input[type="file"] {
+  padding: 10px 12px; font: inherit; font-size: 15px; color: var(--on-pine-2);
+  background: rgba(238, 241, 238, .04); border: 1px dashed #7F958C; border-radius: 6px; cursor: pointer;
+}
+.field input[type="file"]::file-selector-button {
+  margin-right: 12px; padding: 9px 14px; border: 0; border-radius: 4px; cursor: pointer;
+  background: var(--gold); color: #16342B;
+  font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+}
+.field-hint { margin: 0; font-size: 13.5px; color: var(--on-pine-2); }
+.photo-list { display: flex; flex-wrap: wrap; gap: 10px; margin: 2px 0 0; padding: 0; list-style: none; }
+.photo-list li {
+  display: flex; align-items: center; gap: 8px; max-width: 100%;
+  padding: 6px 10px 6px 6px; border-radius: 6px; background: rgba(238, 241, 238, .06);
+  font-size: 13px; color: var(--on-pine-2);
+}
+.photo-list img { width: 40px; height: 40px; object-fit: cover; border-radius: 4px; }
+.photo-list span { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Bot trap: off screen for people, still fillable for scripts. */
+.trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
 .book-done h3 { margin: 12px 0 12px; font-weight: 900; font-stretch: 118%; font-size: clamp(26px, 3vw, 34px); line-height: 1.05; text-transform: uppercase; }
 .book-done p:not(.eyebrow) { margin: 0 0 14px; color: var(--on-pine-2); }
