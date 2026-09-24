@@ -327,6 +327,16 @@ html:not(.js) .wipe-bar { display: none; }
   padding: 22px 0 22px 20px; text-align: right; white-space: nowrap;
   font-family: var(--display); font-weight: 900; font-stretch: 125%; font-size: clamp(24px, 2.2vw, 30px); line-height: 1;
 }
+.combo {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px 20px; flex-wrap: wrap;
+  margin: 0 0 18px; padding: 20px 0 22px; border-top: 1px solid rgba(169, 186, 178, .18); border-bottom: 1px solid rgba(169, 186, 178, .18);
+}
+.combo-name { margin: 0; font-weight: 800; font-stretch: 112%; font-size: 21px; line-height: 1.15; }
+.combo-name span { display: block; margin-top: 6px; font-weight: 400; font-stretch: 100%; font-size: 15px; line-height: 1.4; color: var(--on-pine-2); }
+.combo-price {
+  margin: 0; font-family: var(--display); font-weight: 900; font-stretch: 125%; font-size: clamp(28px, 2.6vw, 34px); line-height: 1;
+  color: var(--gold);
+}
 .price-note {
   margin: 4px 0 24px; padding: 14px 16px; border-radius: 8px;
   background: rgba(14, 36, 30, .5); border-left: 3px solid var(--gold);
@@ -368,6 +378,11 @@ html:not(.js) .wipe-bar { display: none; }
   font-weight: 900; font-stretch: 125%; text-transform: uppercase; font-size: 26px; line-height: 1;
 }
 .card .for { margin: 0 0 22px; color: var(--on-pine-2); }
+.soon {
+  align-self: flex-start; margin: 0 0 12px; padding: 5px 9px 4px; border: 1.5px solid var(--gold); border-radius: 5px;
+  font-family: var(--mono); font-weight: 500; font-size: 11px; letter-spacing: .12em; line-height: 1; text-transform: uppercase;
+  color: var(--gold); white-space: nowrap;
+}
 .card-cta {
   display: flex; align-items: center; min-height: 44px; margin-top: auto;
   padding-top: 16px; border-top: 1px solid rgba(169, 186, 178, .18);

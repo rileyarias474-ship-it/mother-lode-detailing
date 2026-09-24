@@ -9,7 +9,8 @@ const FROM = process.env.BOOKING_FROM
 const SERVICES = [
   'Basic exterior',
   'Basic interior',
-  'Interior and exterior',
+  'Full inside & out',
+  'Interior and exterior', // old name, still accepted from pages cached before the rename
   'Paint correction',
   'Ceramic coating',
   'Not sure yet',
