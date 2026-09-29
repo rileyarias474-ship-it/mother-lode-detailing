@@ -146,6 +146,8 @@ p { text-wrap: pretty; }
   from { transform: translateX(-60%); opacity: 1; }
   to { transform: translateX(60%); opacity: 1; }
 }
+/* The WebP <picture> wrapper stays out of layout, so the logo is still the hero's direct child. */
+.hero picture { display: contents; }
 .hero-decal {
   position: absolute; z-index: 1;
   top: 50%; right: max(var(--gutter), calc((100% - var(--wrap)) / 2 + var(--gutter)));
